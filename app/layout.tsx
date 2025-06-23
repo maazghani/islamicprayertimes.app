@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Islamic Prayer Times",
   description: "Beautiful Islamic prayer times app with accurate location-based calculations",
   generator: "v0.dev",
+  icons: {
+    icon: "/favicon.ico",
+  },
 }
 
 export default function RootLayout({
