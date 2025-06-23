@@ -57,6 +57,58 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  /* Light Lilac Blue Theme */
+  [data-theme="lilac-blue"] {
+    /* Very light blue-tinted background like the screenshot */
+    --primary-bg: 220 25% 97%;
+    --primary-gradient-start: 220 30% 95%;
+    --primary-gradient-end: 220 25% 92%;
+
+    /* Deep blue-purple for headings and important text */
+    --primary-text: 230 45% 25%;
+    --secondary-text: 230 35% 45%;
+    --muted-text: 230 25% 65%;
+
+    /* Blue-tinted accent colors */
+    --accent: 220 70% 60%;
+    --accent-hover: 220 70% 50%;
+    --accent-light: 220 60% 85%;
+
+    /* Card and UI elements */
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(220, 230, 255, 0.3);
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-border: rgba(220, 230, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(220, 230, 255, 0.25);
+  }
+
+  /* Light Lilac Purple Theme - Matching the screenshot */
+  [data-theme="lilac-purple"] {
+    /* Very light lavender background exactly like the screenshot */
+    --primary-bg: 280 25% 97%;
+    --primary-gradient-start: 280 30% 95%;
+    --primary-gradient-end: 280 25% 92%;
+
+    /* Deep purple for headings (like "Zoya" in the screenshot) */
+    --primary-text: 270 45% 25%;
+    --secondary-text: 270 35% 45%;
+    --muted-text: 270 25% 65%;
+
+    /* Purple accent colors matching the screenshot */
+    --accent: 270 70% 60%;
+    --accent-hover: 270 70% 50%;
+    --accent-light: 270 60% 85%;
+
+    /* Card and UI elements */
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(240, 220, 255, 0.3);
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-border: rgba(240, 220, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(240, 220, 255, 0.25);
+  }
 }
 
 @layer base {
@@ -78,10 +130,104 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-bg);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--glass-border);
+}
+
+/* Theme-aware utility classes */
+.bg-primary-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary-gradient-start)), hsl(var(--primary-gradient-end)));
+}
+
+.bg-primary-bg {
+  background-color: hsl(var(--primary-bg));
+}
+
+.text-primary-text {
+  color: hsl(var(--primary-text));
+}
+
+.text-secondary-text {
+  color: hsl(var(--secondary-text));
+}
+
+.text-muted-text {
+  color: hsl(var(--muted-text));
+}
+
+.bg-accent {
+  background-color: hsl(var(--accent));
+}
+
+.bg-accent-hover {
+  background-color: hsl(var(--accent-hover));
+}
+
+.bg-accent-light {
+  background-color: hsl(var(--accent-light));
+}
+
+.bg-card-themed {
+  background-color: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.border-card-themed {
+  border-color: var(--card-border);
+}
+
+.bg-glass {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.border-glass {
+  border-color: var(--glass-border);
+}
+
+.bg-input-themed {
+  background-color: var(--input-bg);
+}
+
+.border-input-themed {
+  border-color: var(--input-border);
+}
+
+.focus\:border-accent:focus {
+  border-color: hsl(var(--accent));
+}
+
+.hover\:bg-accent-hover:hover {
+  background-color: hsl(var(--accent-hover));
+}
+
+.text-accent {
+  color: hsl(var(--accent));
+}
+
+/* Enhanced glass morphism effects */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-input {
+  background: var(--input-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--input-border);
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }

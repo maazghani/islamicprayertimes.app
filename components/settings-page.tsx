@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, MapPin, Loader2 } from "lucide-react"
+import { ArrowLeft, MapPin, Loader2, Palette } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface LocationData {
   zipcode: string
@@ -178,28 +179,36 @@ export function SettingsPage({ currentLocation, onLocationUpdate, onBack }: Sett
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-primary-gradient">
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className="flex items-center p-6">
-          <Button variant="ghost" size="icon" onClick={onBack} className="text-gray-400 hover:text-white mr-4">
-            <ArrowLeft className="w-6 h-6" />
-          </Button>
-          <h1 className="text-xl font-semibold">Settings</h1>
+        <div className="flex items-center justify-between p-6">
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onBack}
+              className="text-muted-text hover:text-primary-text mr-4"
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </Button>
+            <h1 className="text-xl font-bold text-primary-text">Settings</h1>
+          </div>
+          <ThemeToggle />
         </div>
 
         {/* Location Settings */}
         <div className="px-6">
-          <Card className="bg-slate-700/50 border-slate-600">
+          <Card className="glass-card">
             <CardHeader>
-              <CardTitle className="flex items-center text-white">
-                <MapPin className="w-5 h-5 mr-2" />
+              <CardTitle className="flex items-center text-primary-text">
+                <MapPin className="w-5 h-5 mr-2 text-accent" />
                 Location Settings
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="zipcode" className="text-gray-300">
+                <Label htmlFor="zipcode" className="text-secondary-text font-medium">
                   ZIP Code
                 </Label>
                 <Input
@@ -208,23 +217,25 @@ export function SettingsPage({ currentLocation, onLocationUpdate, onBack }: Sett
                   placeholder="Enter your ZIP code"
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
-                  className="bg-slate-600 border-slate-500 text-white placeholder-gray-400"
+                  className="glass-input text-primary-text placeholder-muted-text focus:border-accent"
                   maxLength={5}
                 />
               </div>
 
               {currentLocation.city && (
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-muted-text bg-accent-light/30 p-3 rounded-lg">
                   Current location: {currentLocation.city}, {currentLocation.country}
                 </div>
               )}
 
-              {error && <div className="text-sm text-red-400 bg-red-900/20 p-3 rounded-lg">{error}</div>}
+              {error && (
+                <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-200">{error}</div>
+              )}
 
               <Button
                 onClick={handleSubmit}
                 disabled={loading || !zipcode.trim()}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full bg-accent hover:bg-accent-hover text-white font-medium shadow-lg"
               >
                 {loading ? (
                   <>
@@ -263,38 +274,57 @@ export function SettingsPage({ currentLocation, onLocationUpdate, onBack }: Sett
                   onLocationUpdate(sampleLocation, samplePrayerData)
                 }}
                 variant="outline"
-                className="w-full mt-2 border-slate-500 text-gray-300 hover:bg-slate-600"
+                className="w-full mt-2 border-glass-border text-secondary-text hover:bg-accent-light/20 hover:text-primary-text"
               >
                 Use Sample Data (for testing)
               </Button>
             </CardContent>
           </Card>
 
-          {/* Additional Settings */}
-          <Card className="bg-slate-700/50 border-slate-600 mt-6">
+          {/* Theme Settings */}
+          <Card className="glass-card mt-6">
             <CardHeader>
-              <CardTitle className="text-white">Prayer Settings</CardTitle>
+              <CardTitle className="flex items-center text-primary-text">
+                <Palette className="w-5 h-5 mr-2 text-accent" />
+                Theme Settings
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-gray-300">Calculation Method</span>
-                <span className="text-sm text-gray-400">Islamic Society of North America</span>
+                <span className="text-secondary-text font-medium">Color Theme</span>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-muted-text">Lilac Blue / Purple</span>
+                  <ThemeToggle />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Prayer Settings */}
+          <Card className="glass-card mt-6">
+            <CardHeader>
+              <CardTitle className="text-primary-text">Prayer Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-secondary-text">Calculation Method</span>
+                <span className="text-sm text-muted-text">Islamic Society of North America</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-300">Juristic Method</span>
-                <span className="text-sm text-gray-400">Standard (Shafi, Maliki, Hanbali)</span>
+                <span className="text-secondary-text">Juristic Method</span>
+                <span className="text-sm text-muted-text">Standard (Shafi, Maliki, Hanbali)</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-300">High Latitude Adjustment</span>
-                <span className="text-sm text-gray-400">Middle of Night</span>
+                <span className="text-secondary-text">High Latitude Adjustment</span>
+                <span className="text-sm text-muted-text">Middle of Night</span>
               </div>
             </CardContent>
           </Card>
 
           {/* About */}
-          <Card className="bg-slate-700/50 border-slate-600 mt-6 mb-20">
+          <Card className="glass-card mt-6 mb-20">
             <CardContent className="pt-6">
-              <div className="text-center text-gray-400 text-sm">
+              <div className="text-center text-muted-text text-sm">
                 <p>Prayer times calculated using the Aladhan API</p>
                 <p className="mt-2">Data is accurate for locations within the United States</p>
               </div>

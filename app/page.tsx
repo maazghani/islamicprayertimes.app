@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Settings, Moon, Sun, Sunset } from "lucide-react"
 import { SettingsPage } from "@/components/settings-page"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface PrayerTime {
   name: string
@@ -110,12 +111,12 @@ export default function PrayerTimesApp() {
     if (!prayerData) {
       // Default times if no data loaded
       return [
-        { name: "Fajr", time: "5:32 AM", icon: <Moon className="w-5 h-5 text-blue-400" />, passed: true },
+        { name: "Fajr", time: "5:32 AM", icon: <Moon className="w-5 h-5 text-accent" />, passed: true },
         { name: "Sunrise", time: "7:03 AM", icon: <Sun className="w-5 h-5 text-orange-400" />, passed: true },
-        { name: "Dhuhr", time: "12:48 PM", icon: <Sun className="w-5 h-5 text-yellow-400" />, passed: true },
+        { name: "Dhuhr", time: "12:48 PM", icon: <Sun className="w-5 h-5 text-yellow-500" />, passed: true },
         { name: "Asr", time: "3:50 PM", icon: <Sun className="w-5 h-5 text-orange-500" />, passed: false },
         { name: "Maghrib", time: "6:25 PM", icon: <Sunset className="w-5 h-5 text-orange-600" />, passed: false },
-        { name: "Isha", time: "7:42 PM", icon: <Moon className="w-5 h-5 text-indigo-400" />, passed: false },
+        { name: "Isha", time: "7:42 PM", icon: <Moon className="w-5 h-5 text-accent" />, passed: false },
       ]
     }
 
@@ -131,7 +132,7 @@ export default function PrayerTimesApp() {
       {
         name: "Fajr",
         time: prayerData.fajr,
-        icon: <Moon className="w-5 h-5 text-blue-400" />,
+        icon: <Moon className="w-5 h-5 text-accent" />,
         passed: checkIfPassed(prayerData.fajr),
       },
       {
@@ -143,7 +144,7 @@ export default function PrayerTimesApp() {
       {
         name: "Dhuhr",
         time: prayerData.dhuhr,
-        icon: <Sun className="w-5 h-5 text-yellow-400" />,
+        icon: <Sun className="w-5 h-5 text-yellow-500" />,
         passed: checkIfPassed(prayerData.dhuhr),
       },
       {
@@ -161,7 +162,7 @@ export default function PrayerTimesApp() {
       {
         name: "Isha",
         time: prayerData.isha,
-        icon: <Moon className="w-5 h-5 text-indigo-400" />,
+        icon: <Moon className="w-5 h-5 text-accent" />,
         passed: checkIfPassed(prayerData.isha),
       },
     ]
@@ -187,21 +188,24 @@ export default function PrayerTimesApp() {
   const currentPrayer = prayerTimes.find((p) => !p.passed) || prayerTimes[0]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-primary-gradient">
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="pt-12 pb-6 text-center relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-12 right-6 text-gray-400 hover:text-white"
-            onClick={() => setShowSettings(true)}
-          >
-            <Settings className="w-6 h-6" />
-          </Button>
-          <h1 className="text-lg font-medium text-gray-300 mb-2">{location.city}</h1>
-          <h2 className="text-2xl font-semibold mb-1">Time for {currentPrayer.name}</h2>
-          <p className="text-gray-400 text-sm">
+          <div className="absolute top-12 right-6 flex items-center space-x-2">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-text hover:text-primary-text transition-colors"
+              onClick={() => setShowSettings(true)}
+            >
+              <Settings className="w-6 h-6" />
+            </Button>
+          </div>
+          <h1 className="text-lg font-medium text-secondary-text mb-2">{location.city}</h1>
+          <h2 className="text-2xl font-bold text-primary-text mb-1">Time for {currentPrayer.name}</h2>
+          <p className="text-muted-text text-sm">
             {nextPrayer.name} is in {nextPrayer.timeLeft}
           </p>
         </div>
@@ -209,26 +213,30 @@ export default function PrayerTimesApp() {
         {/* Date */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center">
-            <div className="h-px bg-gray-600 flex-1"></div>
-            <span className="px-4 text-sm text-gray-400">{prayerData?.date.hijri || "Thursday, Safar 2, 1440"}</span>
-            <div className="h-px bg-gray-600 flex-1"></div>
+            <div className="h-px bg-glass-border flex-1"></div>
+            <span className="px-4 text-sm text-muted-text">{prayerData?.date.hijri || "Thursday, Safar 2, 1440"}</span>
+            <div className="h-px bg-glass-border flex-1"></div>
           </div>
         </div>
 
         {/* Prayer Times */}
-        <div className="px-6 space-y-4 pb-8">
+        <div className="px-6 space-y-3 pb-8">
           {prayerTimes.map((prayer, index) => (
             <div
               key={prayer.name}
-              className={`flex items-center justify-between py-3 ${
-                prayer.name === currentPrayer.name ? "bg-slate-700/50 rounded-lg px-4" : ""
+              className={`flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300 ${
+                prayer.name === currentPrayer.name
+                  ? "glass-card shadow-lg scale-[1.02]"
+                  : "bg-card-themed border border-card-themed hover:shadow-md"
               }`}
             >
               <div className="flex items-center space-x-3">
                 {prayer.icon}
-                <span className={`text-lg ${prayer.passed ? "text-gray-500" : "text-white"}`}>{prayer.name}</span>
+                <span className={`text-lg font-medium ${prayer.passed ? "text-muted-text" : "text-primary-text"}`}>
+                  {prayer.name}
+                </span>
               </div>
-              <span className={`text-lg font-medium ${prayer.passed ? "text-gray-500" : "text-white"}`}>
+              <span className={`text-lg font-semibold ${prayer.passed ? "text-muted-text" : "text-primary-text"}`}>
                 {prayer.time}
               </span>
             </div>
